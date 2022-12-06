@@ -18,6 +18,7 @@ const LoginScreen = () => {
         navigation.setOptions({
             headerShown: false
         })
+        
         async function fetchData() {
             const logedss = await getData();
             if (logedss) {

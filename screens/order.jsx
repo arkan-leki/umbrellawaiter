@@ -127,7 +127,7 @@ const Order = () => {
                             data,
                         }) => r + (parseFloat(dana) * parseFloat(data.Nrx)), 0)
 
-                        fetch(`http://${loged}:8000/api/${pswlas}${PswlaID}`, {
+                        fetch(`http://${loged}:8000/api/${pswlas}/${PswlaID}`, {
                             method: 'PATCH',
                             headers: {
                                 Accept: 'application/json',
@@ -210,7 +210,7 @@ const Order = () => {
                                 "KoePswla": total,
                                 "ServiceUserName": user.UserName,
                                 "ServiceUserID": user.ID,
-                                "Waslkra": 1,
+                                "Waslkra": 0,
                                 "Deleted": 0,
                                 "USerName": user.UserName,
                                 "USerId": user.ID,
@@ -225,7 +225,7 @@ const Order = () => {
                         if (json) {
                             const pswlids = json.data.ID
 
-                            fetch(`http://${loged}:8000/api/${kwrses}${Kwrse}`, {
+                            fetch(`http://${loged}:8000/api/${kwrses}/${Kwrse}`, {
                                 method: 'PATCH',
                                 headers: {
                                     Accept: 'application/json',

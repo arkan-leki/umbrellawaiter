@@ -51,7 +51,7 @@ const Pswla = () => {
             }
 
 
-            fetch(`http://${loged}:8000/api/${subpswlas}${subpsl.ID}`, {
+            fetch(`http://${loged}:8000/api/${subpswlas}/${subpsl.ID}`, {
                 method: 'PATCH',
                 headers: {
                     Accept: 'application/json',
@@ -62,7 +62,7 @@ const Pswla = () => {
                 .catch((error) => alert(error)) // display errors
                 .then((v) => {
                     if (v.ok) {
-                        fetch(`http://${loged}:8000/api/${pswlas}${pswlah.ID}`, {
+                        fetch(`http://${loged}:8000/api/${pswlas}/${pswlah.ID}`, {
                             method: 'PATCH',
                             headers: {
                                 Accept: 'application/json',
@@ -99,7 +99,7 @@ const Pswla = () => {
         const loged = await AsyncStorage.getItem('@url');
 
         try {
-            fetch(`http://${loged}:8000/api/${pswlas}${PswlaID}/`)
+            fetch(`http://${loged}:8000/api/${pswlas}/${PswlaID}`)
                 .then((response) => response.json()) // get response, convert to json
                 .then((json) => {
                     if (json) {
@@ -108,7 +108,7 @@ const Pswla = () => {
                 })
                 .catch((error) => alert(error)) // display errors
                 .finally(() => setLoading(false));
-            fetch(`http://${loged}:8000/api/${subpswlas}${PswlaID}/`)
+            fetch(`http://${loged}:8000/api/${subpswlas}/${PswlaID}`)
                 .then((response) => response.json()) // get response, convert to json
                 .then((json) => {
                     if (json) {

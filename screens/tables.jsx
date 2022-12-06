@@ -16,8 +16,6 @@ const Tables = () => {
     const getData = async () => {
 
         async function fetchData() {
-
-
             const loged = await AsyncStorage.getItem('@url');
             fetch(`http://${loged}:8000/api/${kwrses}`)
                 .then((response) => response.json()) // get response, convert to json
@@ -30,6 +28,8 @@ const Tables = () => {
                 .finally(() => setLoading(false)); // change loading state
 
         }
+
+        
         fetchData()
 
     }
@@ -44,6 +44,8 @@ const Tables = () => {
     }
 
     useEffect(() => {
+
+        
         navigation.setOptions({
             headerShown: false
         })
@@ -67,7 +69,7 @@ const Tables = () => {
 
         getData();
 
-
+        console.log('good');
 
 
     }, [])

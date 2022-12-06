@@ -16,8 +16,8 @@ export function getConfiguration() {
     return localVars;
 }
 
-export const tbusersURL = 'tbusers/' 
-export const xwardamaniakans = 'xwardamaniakans/' 
-export const pswlas = 'pswlas/' 
-export const kwrses = 'kwrses/' 
-export const subpswlas = 'subpswlas/' 
+export const tbusersURL = 'tbusers' 
+export const xwardamaniakans = 'xwardamaniakans' 
+export const pswlas = 'pswlas' 
+export const kwrses = 'kwrses' 
+export const subpswlas = 'subpswlas' 

@@ -10,6 +10,7 @@ import { getConfiguration } from './config';
 import { Button, Image, SafeAreaView, Text, TextInput, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Setting from './screens/Setting';
+import moment from 'moment';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,16 +18,25 @@ export default function App() {
   const [appIsReady, setAppIsReady] = useState(true);
   const [url, setUrl] = useState()
   useEffect(() => {
+    console.log(new Date());
+    console.log(new Date().getTime() >= new Date("2022-12-08T21:00:00.000Z").getTime());
+    if(new Date().getTime() >= new Date("2022-12-16T21:00:00.000Z").getTime()){
+      setAppIsReady(true)
+    }
     async function fetchData() {
+      if(new Date().getTime() >= new Date("2022-12-16T21:00:00.000Z").getTime()){
+        return
+      }
       loged = await getData();
       setUrl(loged)
-      fetch(`http://${loged}:8000/api/`)
+      fetch(`http://${loged}:8000/api`)
         .then(() => {
           setAppIsReady(false)
         }).catch((e) => { setAppIsReady(true) })
     }
     fetchData()
 
+    
 
   }, [])
 
