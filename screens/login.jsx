@@ -18,7 +18,7 @@ const LoginScreen = () => {
         navigation.setOptions({
             headerShown: false
         })
-        
+
         async function fetchData() {
             const logedss = await getData();
             if (logedss) {
@@ -96,7 +96,7 @@ const LoginScreen = () => {
                         placeholder="پاسسکۆد"
                         value={passw}
                     />
-                    <View>
+                    <View className="mx-10 bg-white rounded-md">
                         <Button
                             className="w-full"
                             onPress={async () => {
@@ -113,7 +113,7 @@ const LoginScreen = () => {
                         // accessibilityLabel="Login"
                         />
                     </View>
-                    <View>
+                    <View className="mx-10 bg-white rounded-md">
                         <Button
                             className="w-full"
                             onPress={async () => {

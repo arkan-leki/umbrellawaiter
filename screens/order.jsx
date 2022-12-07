@@ -72,7 +72,7 @@ const Order = () => {
 
     return (
         <SafeAreaView style={andoidsafearea.AndroidSafeArea} className="w-full h-screen flex-1 justify-between bg-gray-800">
-            <View className="bg-white mx-4 rounded-md mt-2">
+            <View className="bg-white mx-4 rounded-md text-right mt-2">
                 <SelectList
                     setSelected={(val) => {
                         setSelected([...selected, { id: val, dana: 1, data: menu.filter((vals) => (vals.ID == val))[0] }])
@@ -92,7 +92,9 @@ const Order = () => {
                             <TouchableOpacity key={index}
                                 onPress={() => {
                                     (0 == item.dana) ? setSelected([...selected.filter((v) => (v.id != item.id))])
-                                        : selected.some((v) => (v.id == item.id)) && setSelected([...selected.filter((v) => (v.id != item.id)), { id: item.id, dana: (item.dana - 1), data: item.data }])
+                                        : setSelected(selected.map((value) => {
+                                            return (value.id != item.id) ? value : { ...value, dana: (item.dana - 1) };
+                                        }))
 
                                 }}
                                 className="bg-red-500 rounded-md">
@@ -101,7 +103,9 @@ const Order = () => {
 
                             <TouchableOpacity
                                 onPress={() => {
-                                    selected.some((v) => (v.id == item.id)) && setSelected([...selected.filter((v) => (v.id != item.id)), { id: item.id, dana: (item.dana + 1), data: item.data }])
+                                    setSelected(selected.map((value) => {
+                                        return (value.id != item.id) ? value : { ...value, dana: (item.dana + 1) };
+                                    }))
                                 }}
                                 className={`flex-1 flex-row-reverse justify-between items-center p-3 mx-3 rounded-md shadow-md  bg-yellow-400 border border-gray-500s`}>
                                 <View>
