@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
-import { ActivityIndicator, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { SelectList } from 'react-native-dropdown-select-list'
-import { ArrowLeftIcon } from 'react-native-heroicons/outline'
+import { ArrowLeftIcon, ArrowPathIcon } from 'react-native-heroicons/outline'
 import andoidsafearea from '../components/andoidsafearea'
 import Itemlist from '../components/itemlist'
-import { getConfiguration, xwardamaniakans } from '../config'
+import { xwardamaniakans } from '../config'
 
 const Menu = () => {
     const navigation = useNavigation()
@@ -52,10 +52,6 @@ const Menu = () => {
         }
     }
 
-    const ListIrems = async () => {
-
-    }
-
     useEffect(() => {
         navigation.setOptions({
             headerShown: false
@@ -66,6 +62,7 @@ const Menu = () => {
             setData(menis)
 
             if (menis == null) {
+                console.log("awd");
                 const loged = await AsyncStorage.getItem('@url');
                 fetch(`http://${loged}:8000/api/${xwardamaniakans}`)
                     .then((response) => response.json()) // get response, convert to json
@@ -74,7 +71,7 @@ const Menu = () => {
                             setData(json.data);
                             json.data && storeData(json.data)
                             const data1z = json.data.filter((v) => v.Bash == 1).reduce((acc, curr) => {
-                                const { id, XGroup, Bash } = curr;
+                                const { XGroup } = curr;
 
                                 if (!acc[XGroup]) {
                                     acc[XGroup] = {
@@ -87,7 +84,7 @@ const Menu = () => {
                                 return acc;
                             }, {});
                             const data2z = json.data.filter((v) => v.Bash == 2).reduce((acc, curr) => {
-                                const { id, XGroup, Bash } = curr;
+                                const { XGroup } = curr;
 
                                 if (!acc[XGroup]) {
                                     acc[XGroup] = {
@@ -100,7 +97,7 @@ const Menu = () => {
                                 return acc;
                             }, {});
                             const data3z = json.data.filter((v) => v.Bash == 3).reduce((acc, curr) => {
-                                const { id, XGroup, Bash } = curr;
+                                const { XGroup } = curr;
 
                                 if (!acc[XGroup]) {
                                     acc[XGroup] = {
@@ -126,7 +123,7 @@ const Menu = () => {
             getData().then((menis) => {
 
                 const data1z = menis.filter((v) => v.Bash == 1).reduce((acc, curr) => {
-                    const { id, XGroup, Bash } = curr;
+                    const { XGroup } = curr;
 
                     if (!acc[XGroup]) {
                         acc[XGroup] = {
@@ -139,7 +136,7 @@ const Menu = () => {
                     return acc;
                 }, {});
                 const data2z = menis.filter((v) => v.Bash == 2).reduce((acc, curr) => {
-                    const { id, XGroup, Bash } = curr;
+                    const { XGroup } = curr;
 
                     if (!acc[XGroup]) {
                         acc[XGroup] = {
@@ -152,7 +149,7 @@ const Menu = () => {
                     return acc;
                 }, {});
                 const data3z = menis.filter((v) => v.Bash == 3).reduce((acc, curr) => {
-                    const { id, XGroup, Bash } = curr;
+                    const { XGroup } = curr;
 
                     if (!acc[XGroup]) {
                         acc[XGroup] = {
@@ -186,6 +183,7 @@ const Menu = () => {
     return (
         <SafeAreaView style={andoidsafearea.AndroidSafeArea} className="w-full h-screen flex-1 justify-around bg-gray-800">
             <View className="flex flex-row justify-between py-2 border-cyan-600 border-b shadow-xl relative items-center w-full ">
+
                 <TouchableOpacity
                     onPress={() =>
                     (
@@ -198,6 +196,13 @@ const Menu = () => {
                 </TouchableOpacity>
 
                 <Text className="text-white text-xl flex-1 absolute left-2/4 text-center font-bold">مینیو</Text>
+
+                <ArrowPathIcon size={40} color='yellow' onPress={
+                    async () => {
+                        await AsyncStorage.removeItem('@menu'); 
+                        setData(data)// change loading state
+                    }
+                } className="m-4" />
             </View>
             <View className="h-5/6">
                 <View className="flex flex-row gap-x-3 items-center justify-center py-2 my-2 ">
