@@ -234,17 +234,6 @@ const Pswla = () => {
         getData()
 
 
-        // fetch(`http://${loged}:8000/api/${subpswlas}/${PswlaID}`)
-        //     .then((response) => response.json()) // get response, convert to json
-        //     .then((json) => {
-        //         if (json) {
-        //             console.log(json.data.map((itemd) => ({ ...itemd, JmarayKwrse: 2 })).toJSON());
-
-        //         }
-        //     })
-        //     .catch((error) => alert(error)) // display errors
-        //     .finally(() => setLoading(false));
-
     }, [])
     return (
         <SafeAreaView style={andoidsafearea.AndroidSafeArea} className="w-full h-screen flex-1 bg-gray-800">
@@ -282,7 +271,7 @@ const Pswla = () => {
                             PswlaID: pswlah.ID,
                             PswlaPara: pswlah.Total,
                             dataPswla: pswlah,
-                            Kwrse: Kwrse
+                            Kwrse: pswlah.JKwrse
                         })
                     }
                 } />
