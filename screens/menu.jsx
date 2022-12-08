@@ -65,7 +65,6 @@ const Menu = () => {
             const menis = await getData()
             setData(menis)
 
-            // console.log(menis == null);
             if (menis == null) {
                 const loged = await AsyncStorage.getItem('@url');
                 fetch(`http://${loged}:8000/api/${xwardamaniakans}`)
@@ -73,7 +72,6 @@ const Menu = () => {
                     .then((json) => {
                         if (json) {
                             setData(json.data);
-                            // console.log('rewuist')
                             json.data && storeData(json.data)
                             const data1z = json.data.filter((v) => v.Bash == 1).reduce((acc, curr) => {
                                 const { id, XGroup, Bash } = curr;
@@ -126,7 +124,6 @@ const Menu = () => {
             }
 
             getData().then((menis) => {
-                // console.log('norewuist')
 
                 const data1z = menis.filter((v) => v.Bash == 1).reduce((acc, curr) => {
                     const { id, XGroup, Bash } = curr;

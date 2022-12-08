@@ -29,11 +29,13 @@ const Pswla = () => {
         this.setHours(this.getHours() + h);
         return this;
     }
-
-    const handleUpdate = async () => {
-        console.log(`http://${loged}:8000/api/${kwrses}/${Kwrse}`);
-        if (table > 0 && table < 200) {
-            fetch(`http://${loged}:8000/api/${kwrses}/${Kwrse}`, {
+    const handleUpdate2 = async () => {
+        console.log('====================================');
+        console.log(table == pswlah.JKwrse);
+        console.log('====================================');
+        (table == pswlah.JKwrse) && alert("هەمان مێزە")
+        if (table != pswlah.JKwrse) {
+            fetch(`http://${loged}:8000/api/${kwrses}/${pswlah.JKwrse}`, {
                 method: 'PATCH',
                 headers: {
                     Accept: 'application/json',
@@ -44,69 +46,137 @@ const Pswla = () => {
                     "PswlaID": 0,
                     "Halat": 0
                 })
-            }).then((vv) => {
-                if (vv.ok) {
-                    fetch(`http://${loged}:8000/api/${kwrses}/${table}`, {
-                        method: 'PATCH',
-                        headers: {
-                            Accept: 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            "ID": 1,
-                            "PswlaID": pswlah.ID,
-                            "Halat": 1
-                        })
-                    }).then((vs) => {
-                        if (vs.ok) {
-
-                            fetch(`http://${loged}:8000/api/${pswlas}/${pswlah.ID}`, {
+            })
+            fetch(`http://${loged}:8000/api/${kwrses}/${table}`)
+                .then((response) => response.json())
+                .then((json) => {
+                    if (json) {
+                        fetch(`http://${loged}:8000/api/${pswlas}/${json.data[0].PswlaID}`)
+                            .then((response) => response.json()) // get response, convert to json
+                            .then((json) => {
+                                if (json) {
+                                    fetch(`http://${loged}:8000/api/${pswlas}/${json.data[0].ID}`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                            Accept: 'application/json',
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(
+                                            { ...json.data[0], Total: pswlah.Total + json.data[0].Total, KoePswla: pswlah.KoePswla + json.data[0].KoePswla }
+                                        )
+                                    })
+                                }
+                            })
+                        fetch(`http://${loged}:8000/api/${pswlas}/${pswlah.ID}`)
+                            .then((response) => response.json()) // get response, convert to json
+                            .then((json) => {
+                                if (json) {
+                                    fetch(`http://${loged}:8000/api/${pswlas}/${pswlah.ID}`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                            Accept: 'application/json',
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify(
+                                            { ...json.data[0], Total: 0, KoePswla: 0, Deleted: 1 }
+                                        )
+                                    })
+                                }
+                            })
+                        const newdata = data.map((itemd) => ({ ...itemd, JmarayKwrse: table, SubPswUpdated: 1, Pswlaid: json.data[0].PswlaID }))
+                        newdata && newdata.map((val) => {
+                            fetch(`http://${loged}:8000/api/${subpswlas}/${val.ID}`, {
                                 method: 'PATCH',
                                 headers: {
                                     Accept: 'application/json',
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify(
-                                    {
-                                        "Znjera": pswlah.Znjera,
-                                        "JKwrse": parseInt(table),
-                                        "KoePswla": pswlah.KoePswla,
-                                        "ServiceUserName": pswlah.ServiceUserName,
-                                        "ServiceUserID": pswlah.ServiceUserID,
-                                        "Waslkra": pswlah.Waslkra,
-                                        "Deleted": pswlah.Deleted,
-                                        "USerName": pswlah.USerName,
-                                        "USerId": pswlah.USerId,
-                                        "Barwar": pswlah.Barwar,
-                                        "Kat": pswlah.Kat,
-                                        "Discount": pswlah.Discount,
-                                        "Total": pswlah.Total,
-                                        "tebene": pswlah.tebene
-                                    }
-                                )
-                            }).then((vd) => {
-                                if (vd.ok) {
-                                    const newdata = data.map((itemd) => ({ ...itemd, JmarayKwrse: table, SubPswUpdated:1 }))
-                                    newdata.map((val) => {
-                                        console.log(val);
-                                        fetch(`http://${loged}:8000/api/${subpswlas}/${val.ID}`, {
+                                body: JSON.stringify(val)
+                            }).then(() => {
+                                getData(); setShowmodal(false)
+
+                            })
+                        })
+                        navi.navigate("Tables")
+                    }
+                })
+        }
+
+    }
+    const handleUpdate = async () => {
+        if (table > 0 && table < 200) {
+            fetch(`http://${loged}:8000/api/${kwrses}/${table}`)
+                .then((response) => response.json()) // get response, convert to json
+                .then((json) => {
+                    if (json) {
+                        if (json.data[0].Halat == 1) { return alert("ناتوانیت ") }
+                        console.log('====================================');
+                        console.log(`http://${loged}:8000/api/${kwrses}/${pswlah.JKwrse}`);
+                        console.log('====================================');
+                        fetch(`http://${loged}:8000/api/${kwrses}/${pswlah.JKwrse}`, {
+                            method: 'PATCH',
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                "ID": Kwrse,
+                                "PswlaID": 0,
+                                "Halat": 0
+                            })
+                        }).then((vv) => {
+                            if (vv.ok) {
+                                fetch(`http://${loged}:8000/api/${kwrses}/${table}`, {
+                                    method: 'PATCH',
+                                    headers: {
+                                        Accept: 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        "ID": 1,
+                                        "PswlaID": pswlah.ID,
+                                        "Halat": 1
+                                    })
+                                }).then((vs) => {
+                                    if (vs.ok) {
+
+                                        fetch(`http://${loged}:8000/api/${pswlas}/${pswlah.ID}`, {
                                             method: 'PATCH',
                                             headers: {
                                                 Accept: 'application/json',
                                                 'Content-Type': 'application/json'
                                             },
-                                            body: JSON.stringify(val)
-                                        }).then(() => {
-                                            getData()
+                                            body: JSON.stringify(
+                                                { ...pswlah, JKwrse: table }
+                                            )
+                                        }).then((vd) => {
+                                            if (vd.ok) {
+                                                getData();
+                                                const newdata = data.map((itemd) => ({ ...itemd, JmarayKwrse: table, SubPswUpdated: 1 }))
+                                                newdata && newdata.map((val) => {
+                                                    fetch(`http://${loged}:8000/api/${subpswlas}/${val.ID}`, {
+                                                        method: 'PATCH',
+                                                        headers: {
+                                                            Accept: 'application/json',
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify(val)
+                                                    }).then(() => {
+                                                        getData(); setShowmodal(false)
+                                                    })
+                                                })
+                                            }
                                         })
-                                    })
-                                }
-                            })
-                        }
-                    })
-                }
+                                    }
+                                })
+                            }
 
-            })
+                        })
+                    }
+                })
+                .catch((error) => alert(error)) // display errors
+                .finally(() => setLoading(false));
+
         }
 
     }
@@ -116,21 +186,9 @@ const Pswla = () => {
             const loged = await AsyncStorage.getItem('@url');
 
             const subs = {
-                "Znjera": subpsl.Znjera,
-                "BashID": subpsl.BashID,
-                "XwardnID": subpsl.XwardnID,
-                "Chor": subpsl.Chor,
-                "Qayas": subpsl.Qayas,
-                "Nrx": subpsl.Nrx,
-                "Dana": (subpsl.Dana + dana),
-                "KoePara": (subpsl.KoePara + ((subpsl.Nrx) * dana)),
-                "Hallat": subpsl.Hallat,
-                "Tebene": subpsl.Tebene,
-                "SubPswlaDate": new Date().addHours(3).toJSON(),
-                "SubpswlaTime": new Date().addHours(3).toJSON(),
-                "SubPswUpdated": 1,
-                "JmarayKwrse": subpsl.JmarayKwrse,
-                "Pswlaid": subpsl.Pswlaid
+                ...subpsl, SubPswlaDate: new Date().addHours(3).toJSON(),
+                SubpswlaTime: new Date().addHours(3).toJSON(), SubPswUpdated: 1, Dana: (subpsl.Dana + dana),
+                KoePara: (subpsl.KoePara + ((subpsl.Nrx) * dana))
             }
 
 
@@ -152,22 +210,7 @@ const Pswla = () => {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(
-                                {
-                                    "Znjera": pswlah.Znjera,
-                                    "JKwrse": pswlah.JKwrse,
-                                    "KoePswla": (pswlah.KoePswla + ((subpsl.Nrx) * dana)),
-                                    "ServiceUserName": pswlah.ServiceUserName,
-                                    "ServiceUserID": pswlah.ServiceUserID,
-                                    "Waslkra": pswlah.Waslkra,
-                                    "Deleted": pswlah.Deleted,
-                                    "USerName": pswlah.USerName,
-                                    "USerId": pswlah.USerId,
-                                    "Barwar": pswlah.Barwar,
-                                    "Kat": pswlah.Kat,
-                                    "Discount": pswlah.Discount,
-                                    "Total": ((pswlah.Total + ((subpsl.Nrx) * dana)) - pswlah.Discount),
-                                    "tebene": pswlah.tebene
-                                }
+                                { ...pswlah, KoePswla: (pswlah.KoePswla + ((subpsl.Nrx) * dana)), Total: ((pswlah.Total + ((subpsl.Nrx) * dana)) - pswlah.Discount) }
                             )
                         }).then(() => {
                             getData();
@@ -226,7 +269,6 @@ const Pswla = () => {
 
         async function fetchData() {
             setUser(await getuser())
-            // console.log(await AsyncStorage.getItem('@user'))
         }
 
         fetchData()
@@ -310,7 +352,17 @@ const Pswla = () => {
                                     // accessibilityLabel="Login"
                                     />
                                 </View>
-                                <Text className="text-black">حالەس</Text>
+                                <View className="mx-10 w-32 bg-white rounded-md">
+                                    <Button
+                                        className="w-٣٢"
+                                        onPress={() => {
+                                            handleUpdate2()
+                                        }}
+                                        title="گواستنەوە"
+                                        color="#0B30E0"
+                                    // accessibilityLabel="Login"
+                                    />
+                                </View>
                                 <Pressable
                                     onPress={() => setShowmodal(!showmodal)}
                                 >
@@ -333,12 +385,11 @@ const Pswla = () => {
                             <View className="flex-1 flex-col">
                                 <Text className="text-base text-right  text-black">{psl.Chor}</Text>
                                 <Text className="text-base text-right  text-black">${psl.Nrx}</Text>
-                                <Text className="text-base text-right  text-black">${psl.JmarayKwrse}</Text>
-
+                                {/* <Text className="text-base text-right  text-black">${psl.JmarayKwrse}</Text> */}
                             </View>
-                            <View className="flex flex-row-reverse gap-2 items-center">
+                            <View className="flex flex-row-reverse gap-x-2 items-center">
                                 {psl.Hallat == 0 && <MinusCircleIcon size={30} color='red' onPress={() => update(pswlah, psl, -1)} />}
-                                <Text className="text-lg text-center  text-black">{psl.Dana}X</Text>
+                                <Text className="text-lg text-center text-black">{psl.Dana}X</Text>
                                 {psl.Hallat == 0 && <PlusCircleIcon size={30} color='green' onPress={() => update(pswlah, psl, 1)} />}
                             </View>
                             <View>

@@ -168,22 +168,7 @@ const Order = () => {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(
-                                {
-                                    "Znjera": dataPswla.Znjera,
-                                    "JKwrse": dataPswla.JKwrse,
-                                    "KoePswla": (total + PswlaPara) - dataPswla.Discount,
-                                    "ServiceUserName": dataPswla.ServiceUserName,
-                                    "ServiceUserID": dataPswla.ServiceUserID,
-                                    "Waslkra": dataPswla.Waslkra,
-                                    "Deleted": dataPswla.Deleted,
-                                    "USerName": dataPswla.USerName,
-                                    "USerId": dataPswla.USerId,
-                                    "Barwar": dataPswla.Barwar,
-                                    "Kat": dataPswla.Kat,
-                                    "Discount": dataPswla.Discount,
-                                    "Total": (total + PswlaPara),
-                                    "tebene": dataPswla.tebene
-                                }
+                                { ...dataPswla, KoePswla: (total + PswlaPara) - dataPswla.Discount, Total: (total + PswlaPara) }
                             )
                         })
 

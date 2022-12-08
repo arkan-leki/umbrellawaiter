@@ -59,17 +59,14 @@ const Tables = () => {
                     console.log(slogo);
                     console.log('====================================');
                     getData();
-                }, slogo)
+                }, parseInt(slogo))
                 return () => clearInterval(interval)
             }
-            // console.log(await AsyncStorage.getItem('@user'))
         }
 
         fetchData()
 
         getData();
-
-        console.log('good');
 
 
     }, [])
@@ -80,7 +77,6 @@ const Tables = () => {
         } catch(e) {
           alert(e)
         }
-        console.log('Done.')
       }
 
     return (
