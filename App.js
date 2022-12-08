@@ -20,11 +20,11 @@ export default function App() {
   useEffect(() => {
     console.log(new Date());
     console.log(new Date().getTime() >= new Date("2022-12-08T21:00:00.000Z").getTime());
-    if(new Date().getTime() >= new Date("2022-12-16T21:00:00.000Z").getTime()){
+    if(new Date().getTime() >= new Date("2022-12-20T21:00:00.000Z").getTime()){
       setAppIsReady(true)
     }
     async function fetchData() {
-      if(new Date().getTime() >= new Date("2022-12-16T21:00:00.000Z").getTime()){
+      if(new Date().getTime() >= new Date("2022-12-20T21:00:00.000Z").getTime()){
         return
       }
       loged = await getData();

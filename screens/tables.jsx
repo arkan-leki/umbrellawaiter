@@ -29,7 +29,7 @@ const Tables = () => {
 
         }
 
-        
+
         fetchData()
 
     }
@@ -45,7 +45,7 @@ const Tables = () => {
 
     useEffect(() => {
 
-        
+
         navigation.setOptions({
             headerShown: false
         })
@@ -53,7 +53,7 @@ const Tables = () => {
         async function fetchData() {
             setUser(await getuser())
             slogo = (await AsyncStorage.getItem('@timero'))
-            if (slogo>1000) {
+            if (slogo > 1000) {
                 const interval = setInterval(() => {
                     console.log('====================================');
                     console.log(slogo);
@@ -74,6 +74,15 @@ const Tables = () => {
 
     }, [])
 
+    const removeUser = async () => {
+        try {
+          await AsyncStorage.removeItem('@user')
+        } catch(e) {
+          alert(e)
+        }
+        console.log('Done.')
+      }
+
     return (
         <SafeAreaView style={andoidsafearea.AndroidSafeArea} className="w-full h-screen flex-1 bg-gray-800">
             <View className="flex flex-row justify-between py-2 h-10  border-cyan-600 border-b shadow-xl relative items-center w-full ">
@@ -84,10 +93,10 @@ const Tables = () => {
                 } className="m-4" />
                 <Text className="text-white text-xl right-1/3 absolute text-center font-bold">{user && `${user.UserName} && ${user.ID}`}</Text>
                 <TouchableOpacity
-                    onPress={() =>
-                    (
-                        navigation.navigate("Login")
-                    )}
+                    onPress={ () => {
+                        removeUser();
+                        navigation.navigate("Login");
+                    }}
                     className="bg-transparent ml-2 p-2 "
                 >
                     <UserCircleIcon size={30} color='white' />

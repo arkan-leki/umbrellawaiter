@@ -1,17 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import moment from 'moment'
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Button, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { SelectList } from 'react-native-dropdown-select-list'
 import andoidsafearea from '../components/andoidsafearea'
-import { getConfiguration, kwrses, pswlas, subpswlas } from '../config'
+import { kwrses, pswlas, subpswlas } from '../config'
 
 const Order = () => {
     const navigation = useNavigation()
     const [selected, setSelected] = useState([])
     const [user, setUser] = useState()
     const [menu, setMenu] = useState([])
+    const [barcode, setBarcode] = useState()
+    
     const {
         params: {
             Halat,
@@ -24,6 +25,7 @@ const Order = () => {
     } = useRoute();
 
     const menuOpt = menu ? [...menu.map((opt) => ({ key: opt.ID, value: opt.Chor }))] : []
+    const menuOpt2 = menu ? [...menu.map((opt) => ({ key: opt.ID, value: (opt.ID).toString() }))] : []
 
 
     useEffect(() => {
@@ -73,6 +75,7 @@ const Order = () => {
     return (
         <SafeAreaView style={andoidsafearea.AndroidSafeArea} className="w-full h-screen flex-1 justify-between bg-gray-800">
             <View className="bg-white mx-4 rounded-md text-right mt-2">
+                {/* chak ba id behene */}
                 <SelectList
                     setSelected={(val) => {
                         setSelected([...selected, { id: val, dana: 1, data: menu.filter((vals) => (vals.ID == val))[0] }])
@@ -83,6 +86,34 @@ const Order = () => {
                     placeholder='خواردنەکان خیرا بگەرێ'
                     search={true}
                 />
+            </View>
+            <View className="flex flex-row-reverse items-center justify-around gap-x-2  bg-white mx-4  rounded-md my-2">
+                {/* chak ba id behene */}
+                {/* <SelectList
+                    setSelected={(val) => {
+                        setSelected([...selected, { id: val, dana: 1, data: menu.filter((vals) => (vals.ID == val))[0] }])
+                    }}
+                    boxStyles={{ borderRadius: 4 }}
+                    data={menuOpt2}
+                    save="Key"
+                    placeholder='خواردنەکان خیرا بگەرێ'
+                    search={true}
+                /> */}
+                <TextInput
+                    className="bg-white p-3 flex-1 text-right "
+                    keyboardType='numeric'
+                    onChangeText={(val) => setBarcode(val)}
+                    placeholder="کۆد"
+                    value={barcode}
+                />
+                <View className="p-3">
+                    <Button
+                        onPress={() => {
+                            menu.some((vals) => (vals.ID == barcode)) && setSelected([...selected, { id: barcode, dana: 1, data: menu.filter((vals) => (vals.ID == barcode))[0] }])
+                        }}
+                        title="گەران"
+                        color="#0B30E0" />
+                </View>
             </View>
             <ScrollView className="h-full">
                 <View className="flex flex-col gap-2 py-4 mb-10">
