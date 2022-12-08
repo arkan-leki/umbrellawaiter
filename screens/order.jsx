@@ -12,7 +12,7 @@ const Order = () => {
     const [user, setUser] = useState()
     const [menu, setMenu] = useState([])
     const [barcode, setBarcode] = useState()
-    
+
     const {
         params: {
             Halat,
@@ -44,7 +44,6 @@ const Order = () => {
         }
         fetchData()
         return () => {
-            // console.log(selected);
         }
     }, [])
 
