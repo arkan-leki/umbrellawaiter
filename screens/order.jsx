@@ -128,7 +128,7 @@ const Order = () => {
                                 onPress={() => {
                                     (0 == item.dana) ? setSelected([...selected.filter((v) => (v.id != item.id))])
                                         : setSelected(selected.map((value, indexs) => {
-                                            return (indexs != indexs) ? value : { ...value, dana: (item.dana - 1) };
+                                            return (indexs != index) ? value : { ...value, dana: (item.dana - 1) };
                                         }))
 
                                 }}
