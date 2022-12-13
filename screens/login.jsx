@@ -91,7 +91,7 @@ const LoginScreen = () => {
                     </View>
                     <TextInput
                         className="bg-white p-3 text-right border rounded-xl border-gray-500"
-                        // keyboardType='password'
+                        secureTextEntry={true}
                         onChangeText={(val) => setPassw(val)}
                         placeholder="پاسسکۆد"
                         value={passw}

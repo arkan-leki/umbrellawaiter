@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Button, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Button, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { SelectList } from 'react-native-dropdown-select-list'
+import { PencilSquareIcon } from 'react-native-heroicons/outline'
 import andoidsafearea from '../components/andoidsafearea'
 import { kwrses, pswlas, subpswlas } from '../config'
 
@@ -12,6 +13,9 @@ const Order = () => {
     const [user, setUser] = useState()
     const [menu, setMenu] = useState([])
     const [barcode, setBarcode] = useState()
+    const [showmodal, setShowmodal] = useState(false)
+    const [text, setText] = useState();
+    const [open, setOpen] = useState()
 
     const {
         params: {
@@ -45,6 +49,7 @@ const Order = () => {
         fetchData()
         return () => {
         }
+
     }, [])
 
     const getData = async () => {
@@ -119,11 +124,11 @@ const Order = () => {
                     {Pswla && selected.map((item, index) =>
                     (
                         <View key={index} className="flex flex-row-reverse gap-1 items-center mx-2">
-                            <TouchableOpacity key={index}
+                            <TouchableOpacity
                                 onPress={() => {
                                     (0 == item.dana) ? setSelected([...selected.filter((v) => (v.id != item.id))])
-                                        : setSelected(selected.map((value) => {
-                                            return (value.id != item.id) ? value : { ...value, dana: (item.dana - 1) };
+                                        : setSelected(selected.map((value, indexs) => {
+                                            return (indexs != indexs) ? value : { ...value, dana: (item.dana - 1) };
                                         }))
 
                                 }}
@@ -133,18 +138,73 @@ const Order = () => {
 
                             <TouchableOpacity
                                 onPress={() => {
-                                    setSelected(selected.map((value) => {
-                                        return (value.id != item.id) ? value : { ...value, dana: (item.dana + 1) };
+                                    // setSelected(selected.map((value) => {
+                                    //     return (value.id != item.id) ? value : { ...value, dana: (item.dana + 1) };
+                                    // }))
+                                    setSelected(selected.map((value, indexs) => {
+                                        console.log(indexs);
+                                                            console.log(index);
+                                        return (indexs != index) ? value : { ...value, dana: (item.dana + 1) };
                                     }))
                                 }}
-                                className={`flex-1 flex-row-reverse justify-between items-center p-3 mx-3 rounded-md shadow-md  bg-yellow-400 border border-gray-500s`}>
+                                className={`flex-1 flex-row-reverse flex-wrap justify-between items-center p-3 mx-3 rounded-md shadow-md  bg-yellow-400 border border-gray-500s`}>
                                 <View>
                                     <Text className="text-black text-right text-base">{item.data.Chor}</Text>
                                     <Text className="text-black text-right text-base">${item.data.Nrx}</Text>
                                 </View>
                                 <Text className="text-base">{item.dana}x</Text>
+                                <Text className="text-base">{item.tebene}</Text>
                                 <Text className="text-base">${item.data.Nrx * item.dana}</Text>
                             </TouchableOpacity>
+                            
+                            <Pressable onPress={() => { setShowmodal(true); setOpen(index) }}>
+
+                                <PencilSquareIcon  size={30} color='orange' />
+
+                            </Pressable>
+                            <Modal
+                                animationType="slide"
+                                transparent={true}
+                                visible={showmodal}
+                                onRequestClose={() => {
+                                    Alert.alert("Modal has been closed.");
+                                    setShowmodal(!showmodal);
+                                }}>
+                                <View className="h-screen w-screen flex-1 justify-center items-center bg-gray-700  opacity-80 backdrop-blur-md">
+                                    <View className="flex w-3/4 items-center rounded-md bg-white">
+                                        <View className="flex flex-col gap-y-2 m-4">
+                                            <TextInput
+                                                className="bg-white p-3 text-right w-fit border rounded-xl border-gray-500"
+                                                multiline
+                                                onChangeText={(val) => setText(val)}
+                                                placeholder="تێبینی"
+                                                value={text}
+                                            />
+                                            <View className="mx-10 w-32 bg-white rounded-md">
+                                                <Button
+                                                    className="w-32"
+                                                    onPress={() => {
+                                                        setSelected(selected.map((value, indexs) => {
+                                                            console.log(open);
+                                                            return (indexs != open) ? value : { ...value, tebene: text };
+                                                        }))
+                                                        
+                                                        setShowmodal(false)
+                                                        setText()
+                                                    }}
+                                                    title="دانان"
+                                                    color="#0B30E0"
+                                                />
+                                            </View>
+                                            <Pressable
+                                                onPress={() => setShowmodal(!showmodal)}
+                                            >
+                                                <Text className="text-white p-3 bg-red-800 rounded">داخستن</Text>
+                                            </Pressable>
+                                        </View>
+                                    </View>
+                                </View>
+                            </Modal>
                         </View>
                     )
                     )}
@@ -190,7 +250,7 @@ const Order = () => {
                                         "Dana": val.dana,
                                         "KoePara": (val.data.Nrx * val.dana),
                                         "Hallat": 0,
-                                        "Tebene": "",
+                                        "Tebene": val.tebene ? val.tebene : "",
                                         "SubPswlaDate": new Date().addHours(3).toJSON(),
                                         "SubpswlaTime": new Date().addHours(3).toJSON(),
                                         "SubPswUpdated": 0,
@@ -276,7 +336,7 @@ const Order = () => {
                                             "Dana": val.dana,
                                             "KoePara": (val.data.Nrx * val.dana),
                                             "Hallat": 0,
-                                            "Tebene": "",
+                                            "Tebene": val.tebene ? val.tebene : "",
                                             "SubPswlaDate": new Date().addHours(3).toJSON(),
                                             "SubpswlaTime": new Date().addHours(3).toJSON(),
                                             "SubPswUpdated": 0,

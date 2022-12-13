@@ -3,7 +3,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import moment from 'moment/moment';
 import React, { useEffect, useState } from 'react'
 import { Button, Modal, Pressable, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { ArrowLeftIcon, ArrowPathIcon, ArrowUturnRightIcon, CubeTransparentIcon, MinusCircleIcon, PlusCircleIcon } from 'react-native-heroicons/outline';
+import { ArrowLeftIcon, ArrowPathIcon, ArrowUturnRightIcon, ClockIcon, CubeTransparentIcon, CurrencyDollarIcon, MinusCircleIcon, PlusCircleIcon } from 'react-native-heroicons/outline';
 import andoidsafearea from '../components/andoidsafearea';
 import { kwrses, pswlas, subpswlas } from '../config';
 
@@ -377,23 +377,26 @@ const Pswla = () => {
 
             <ScrollView className="flex-1">
 
-                <View className="flex flex-col bg-white border-2 border-[#F3F3F3] rounded-md shadow-sm justify-between mx-4 my-2">
+                <View className="flex flex-col  bg-white border-2 border-[#F3F3F3] rounded-md shadow-sm justify-between mx-4 my-2">
 
                     {data.map((psl, index) =>
                     (
-                        <View key={index} className={`flex flex-row-reverse items-center p-3 justify-between border border-gray-500  ${psl.Hallat == 1 ? 'bg-green-500' : `${psl.SubPswUpdated ? 'bg-orange-400' : 'bg-yellow-500'}`} `}>
-                            <View className="flex-1 flex-col">
-                                <Text className="text-base text-right  text-black">{psl.Chor}</Text>
-                                <Text className="text-base text-right  text-black">${psl.Nrx}</Text>
-                                {/* <Text className="text-base text-right  text-black">${psl.JmarayKwrse}</Text> */}
-                            </View>
+                        <View key={index} className={`flex flex-col  items-center p-3 justify-between border border-gray-500  ${psl.Hallat == 1 ? 'bg-green-500' : `${psl.SubPswUpdated ? 'bg-orange-400' : 'bg-yellow-500'}`} `}>
+                            <View className="flex flex-row-reverse flex-wrap items-center gap-x-2 mb-2">
+                                <Text className="text-base text-right font-bold text-black">{psl.Chor}</Text>
+                                <Text className="text-sm text-right  text-black">{psl.Tebene}</Text>
+                                </View>
                             <View className="flex flex-row-reverse gap-x-2 items-center">
-                                {psl.Hallat == 0 && <MinusCircleIcon size={30} color='red' onPress={() => update(pswlah, psl, -1)} />}
-                                <Text className="text-lg text-center text-black">{psl.Dana}X</Text>
-                                {psl.Hallat == 0 && <PlusCircleIcon size={30} color='green' onPress={() => update(pswlah, psl, 1)} />}
-                            </View>
-                            <View>
-                                <Text className="text-base text-center  text-black">${psl.KoePara}</Text>
+                            <Text className="text-sm text-right  text-black"><CurrencyDollarIcon size={20} color='white' />{psl.Nrx}</Text>
+                                <Text className="text-sm text-right  text-black"><ClockIcon size={20} color='white' />{moment(new Date(psl.SubpswlaTime)).format("hh:mm A")}</Text>
+                                <View className="flex flex-row-reverse gap-x-2 items-center">
+                                    {psl.Hallat == 0 && <MinusCircleIcon size={30} color='red' onPress={() => update(pswlah, psl, -1)} />}
+                                    <Text className="text-lg text-center text-black font-bold">{psl.Dana}X</Text>
+                                    {<PlusCircleIcon size={30} color='green' onPress={() => update(pswlah, psl, 1)} />}
+                                </View>
+                                <View>
+                                    <Text className="text-base text-center font-bold text-black">${psl.KoePara}</Text>
+                                </View>
                             </View>
                         </View>
                     ))}
