@@ -385,12 +385,12 @@ const Pswla = () => {
                             <View className="flex flex-row-reverse flex-wrap items-center gap-x-2 mb-2">
                                 <Text className="text-base text-right font-bold text-black">{psl.Chor}</Text>
                                 <Text className="text-sm text-right  text-black">{psl.Tebene}</Text>
-                                </View>
+                            </View>
                             <View className="flex flex-row-reverse gap-x-2 items-center">
-                            <Text className="text-sm text-right  text-black"><CurrencyDollarIcon size={20} color='white' />{psl.Nrx}</Text>
+                                <Text className="text-sm text-right  text-black"><CurrencyDollarIcon size={20} color='white' />{psl.Nrx}</Text>
                                 <Text className="text-sm text-right  text-black"><ClockIcon size={20} color='white' />{moment(new Date(psl.SubpswlaTime)).format("hh:mm A")}</Text>
                                 <View className="flex flex-row-reverse gap-x-2 items-center">
-                                    {psl.Hallat == 0 && <MinusCircleIcon size={30} color='red' onPress={() => update(pswlah, psl, -1)} />}
+                                    {psl.Hallat == 0 && <MinusCircleIcon size={30} color='red' onPress={() => { (0 != psl.Dana) && update(pswlah, psl, -1) }} />}
                                     <Text className="text-lg text-center text-black font-bold">{psl.Dana}X</Text>
                                     {<PlusCircleIcon size={30} color='green' onPress={() => update(pswlah, psl, 1)} />}
                                 </View>
