@@ -231,7 +231,7 @@ const Menu = () => {
                             setSelected={(key) => setDatazz(items[key].items)}
                             data={menuOpt}
                             save="Key"
-                            placeholder="کاپتن"
+                            placeholder="جۆر"
                         // search={false}
                         />
                     </View>

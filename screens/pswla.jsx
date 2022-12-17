@@ -30,77 +30,72 @@ const Pswla = () => {
         return this;
     }
     const handleUpdate2 = async () => {
-        console.log('====================================');
-        console.log(table == pswlah.JKwrse);
-        console.log('====================================');
-        (table == pswlah.JKwrse) && alert("هەمان مێزە")
-        if (table != pswlah.JKwrse) {
-            fetch(`http://${loged}:8000/api/${kwrses}/${pswlah.JKwrse}`, {
-                method: 'PATCH',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    "ID": Kwrse,
-                    "PswlaID": 0,
-                    "Halat": 0
-                })
-            })
-            fetch(`http://${loged}:8000/api/${kwrses}/${table}`)
-                .then((response) => response.json())
-                .then((json) => {
-                    if (json) {
-                        fetch(`http://${loged}:8000/api/${pswlas}/${json.data[0].PswlaID}`)
-                            .then((response) => response.json()) // get response, convert to json
-                            .then((json) => {
-                                if (json) {
-                                    fetch(`http://${loged}:8000/api/${pswlas}/${json.data[0].ID}`, {
-                                        method: 'PATCH',
-                                        headers: {
-                                            Accept: 'application/json',
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(
-                                            { ...json.data[0], Total: pswlah.Total + json.data[0].Total, KoePswla: pswlah.KoePswla + json.data[0].KoePswla }
-                                        )
-                                    })
-                                }
-                            })
-                        fetch(`http://${loged}:8000/api/${pswlas}/${pswlah.ID}`)
-                            .then((response) => response.json()) // get response, convert to json
-                            .then((json) => {
-                                if (json) {
-                                    fetch(`http://${loged}:8000/api/${pswlas}/${pswlah.ID}`, {
-                                        method: 'PATCH',
-                                        headers: {
-                                            Accept: 'application/json',
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(
-                                            { ...json.data[0], Total: 0, KoePswla: 0, Deleted: 1 }
-                                        )
-                                    })
-                                }
-                            })
-                        const newdata = data.map((itemd) => ({ ...itemd, JmarayKwrse: table, SubPswUpdated: 1, Pswlaid: json.data[0].PswlaID }))
-                        newdata && newdata.map((val) => {
-                            fetch(`http://${loged}:8000/api/${subpswlas}/${val.ID}`, {
-                                method: 'PATCH',
-                                headers: {
-                                    Accept: 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(val)
-                            }).then(() => {
-                                getData(); setShowmodal(false)
-
-                            })
+        if (table == pswlah.JKwrse) { return alert("هەمان مێزە") }
+        fetch(`http://${loged}:8000/api/${kwrses}/${table}`)
+            .then((response) => response.json()).then((json) => {
+                if (json.data[0].Halat == 0) return alert("گۆڕین ئەنجام بدە ")
+                if (json.data[0].Halat != 0) {
+                    fetch(`http://${loged}:8000/api/${kwrses}/${pswlah.JKwrse}`, {
+                        method: 'PATCH',
+                        headers: {
+                            Accept: 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            "ID": Kwrse,
+                            "PswlaID": 0,
+                            "Halat": 0
                         })
-                        navi.navigate("Tables")
-                    }
-                })
-        }
+                    })
+
+                    fetch(`http://${loged}:8000/api/${pswlas}/${json.data[0].PswlaID}`)
+                        .then((response) => response.json()) // get response, convert to json
+                        .then((json) => {
+                            if (json) {
+                                fetch(`http://${loged}:8000/api/${pswlas}/${json.data[0].ID}`, {
+                                    method: 'PATCH',
+                                    headers: {
+                                        Accept: 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(
+                                        { ...json.data[0], Total: pswlah.Total + json.data[0].Total, KoePswla: pswlah.KoePswla + json.data[0].KoePswla }
+                                    )
+                                })
+                            }
+                        })
+                    fetch(`http://${loged}:8000/api/${pswlas}/${pswlah.ID}`)
+                        .then((response) => response.json()) // get response, convert to json
+                        .then((json) => {
+                            if (json) {
+                                fetch(`http://${loged}:8000/api/${pswlas}/${pswlah.ID}`, {
+                                    method: 'PATCH',
+                                    headers: {
+                                        Accept: 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify(
+                                        { ...json.data[0], Total: 0, KoePswla: 0, Deleted: 1 }
+                                    )
+                                })
+                            }
+                        })
+                    const newdata = data.map((itemd) => ({ ...itemd, JmarayKwrse: table, SubPswUpdated: 1, Pswlaid: json.data[0].PswlaID }))
+                    newdata && newdata.map((val) => {
+                        fetch(`http://${loged}:8000/api/${subpswlas}/${val.ID}`, {
+                            method: 'PATCH',
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(val)
+                        })
+                    })
+                    getData()
+                    setShowmodal(false)
+                    navi.navigate("Tables")
+                }
+            })
 
     }
     const handleUpdate = async () => {
@@ -331,9 +326,9 @@ const Pswla = () => {
                         Alert.alert("Modal has been closed.");
                         setShowmodal(!showmodal);
                     }}>
-                    <View className="h-screen w-screen flex-1 justify-center items-center bg-gray-700  opacity-80 backdrop-blur-md">
-                        <View className="flex w-3/4 items-center rounded-md bg-white">
-                            <View className="flex flex-col gap-y-2 m-4">
+                    <View className="fixed justify-center h-full z-50 overflow-auto bg-[#2d2d2dad]  flex">
+                        <View className="rrelative p-8 bg-white w-3/4 items-center max-w-md m-auto flex-col flex rounded-md " >
+                            <View className="flex flex-col gap-y-2 m-4 ">
                                 <TextInput
                                     className="bg-white p-3 text-right w-fit border rounded-xl border-gray-500"
                                     keyboardType='numeric'

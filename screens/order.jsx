@@ -143,7 +143,7 @@ const Order = () => {
                                     // }))
                                     setSelected(selected.map((value, indexs) => {
                                         console.log(indexs);
-                                                            console.log(index);
+                                        console.log(index);
                                         return (indexs != index) ? value : { ...value, dana: (item.dana + 1) };
                                     }))
                                 }}
@@ -156,10 +156,10 @@ const Order = () => {
                                 <Text className="text-base">{item.tebene}</Text>
                                 <Text className="text-base">${item.data.Nrx * item.dana}</Text>
                             </TouchableOpacity>
-                            
+
                             <Pressable onPress={() => { setShowmodal(true); setOpen(index) }}>
 
-                                <PencilSquareIcon  size={30} color='orange' />
+                                <PencilSquareIcon size={30} color='orange' />
 
                             </Pressable>
                             <Modal
@@ -170,8 +170,8 @@ const Order = () => {
                                     Alert.alert("Modal has been closed.");
                                     setShowmodal(!showmodal);
                                 }}>
-                                <View className="h-screen w-screen flex-1 justify-center items-center bg-gray-700  opacity-80 backdrop-blur-md">
-                                    <View className="flex w-3/4 items-center rounded-md bg-white">
+                                <View className="fixed justify-center h-full z-50 overflow-auto bg-[#2d2d2dad]  flex">
+                                    <View className="rrelative p-8 bg-white w-3/4 items-center max-w-md m-auto flex-col flex rounded-md " >
                                         <View className="flex flex-col gap-y-2 m-4">
                                             <TextInput
                                                 className="bg-white p-3 text-right w-fit border rounded-xl border-gray-500"
@@ -188,7 +188,7 @@ const Order = () => {
                                                             console.log(open);
                                                             return (indexs != open) ? value : { ...value, tebene: text };
                                                         }))
-                                                        
+
                                                         setShowmodal(false)
                                                         setText()
                                                     }}
