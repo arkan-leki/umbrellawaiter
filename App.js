@@ -19,12 +19,12 @@ export default function App() {
   const [url, setUrl] = useState()
   useEffect(() => {
     console.log(new Date());
-    console.log(new Date().getTime() >= new Date("2022-12-08T21:00:00.000Z").getTime());
-    if(new Date().getTime() >= new Date("2022-12-20T21:00:00.000Z").getTime()){
+    console.log(new Date().getTime() >= new Date("2023-01-01T21:00:00.000Z").getTime());
+    if(new Date().getTime() >= new Date("2023-01-01T21:00:00.000Z").getTime()){
       setAppIsReady(true)
     }
     async function fetchData() {
-      if(new Date().getTime() >= new Date("2022-12-20T21:00:00.000Z").getTime()){
+      if(new Date().getTime() >= new Date("2023-01-01T21:00:00.000Z").getTime()){
         return
       }
       loged = await getData();
@@ -59,7 +59,7 @@ export default function App() {
 
   if (appIsReady) {
     return (
-      <SafeAreaView className="flex items-center gap-3 justify-center w-full h-screen">
+      <SafeAreaView className="flex items-center gap-3 justify-start mt-10 w-full h-screen">
         <Image source={require('./images/umbrella.png')}
           style={{
             width: 200,

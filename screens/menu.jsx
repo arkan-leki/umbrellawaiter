@@ -278,6 +278,7 @@ const Menu = () => {
             </View>
             <TouchableOpacity
                 onPress={() => {
+
                     navigation.navigate("Order", {
                         Halat: Halat,
                         PswlaID: PswlaID,
@@ -286,6 +287,7 @@ const Menu = () => {
                         PswlaPara: PswlaPara,
                         dataPswla: dataPswla
                     })
+                    setSelected([])
 
                 }
                 }
